@@ -13,6 +13,7 @@ include_directories(SYSTEM ${OpenCL_INCLUDE_DIRS})
 # find OpenGL
 find_package(OpenGL REQUIRED)
 include_directories(SYSTEM ${OpenGL_INCLUDE_DIRS})
+link_directories(${OpenGL_LIBRARY_DIRS})
 
 find_package(QGLVIEWER REQUIRED)
 include_directories(${QGLVIEWER_INCLUDE_DIR})
@@ -32,9 +33,9 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 set(EXAMPLES
   mainLight
 )
-
+message(STATUS ${OpenCL_LIBRARIES} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES} ${Qt5Xml_LIBRARIES})
 
 foreach(EXAMPLE ${EXAMPLES})
 add_executable(${EXAMPLE} ${EXAMPLE}.cpp lightviewer)
-target_link_libraries(${EXAMPLE} ${OpenCL_LIBRARIES} ${QGLVIEWER_LIBRARIES} ${OpenGL_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES} ${Qt5Xml_LIBRARIES})
+target_link_libraries(${EXAMPLE} ${OpenCL_LIBRARIES} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5OpenGL_LIBRARIES} ${Qt5Xml_LIBRARIES})
 endforeach()
