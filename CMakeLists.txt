@@ -18,11 +18,7 @@ find_package(QGLVIEWER REQUIRED)
 include_directories(${QGLVIEWER_INCLUDE_DIR})
 
  find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
-#find_package(Qt5Widgets REQUIRED)
-#find_package(Qt5OpenGL REQUIRED)
-include_directories(${Qt5Widgets_INCLUDES_DIRS}
-${Qt5OpenGL_INCLUDES_DIR}
-${Qt5Xml_INCLUDES_DIR})
+include_directories(${Qt5Widgets_INCLUDES_DIRS} ${Qt5OpenGL_INCLUDES_DIR} ${Qt5Xml_INCLUDES_DIR})
 
 # required by both versions
 set(CMAKE_AUTOMOC TRUE)
