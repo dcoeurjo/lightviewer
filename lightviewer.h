@@ -38,6 +38,9 @@ protected:
   boost::compute::opengl_buffer m_vertices_cl;
   QGLBuffer m_vertices_buffer;
 
+  QGLBuffer m_indices_buffer;
+  std::vector<GLushort> m_indices;
+  
   boost::compute::kernel m_updatePos_kernel;
 
   

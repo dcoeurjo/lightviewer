@@ -4,7 +4,7 @@ using namespace std;
 using namespace boost;
 
 const char source[] = BOOST_COMPUTE_STRINGIZE_SOURCE(
-                                                     __kernel void updatePosition(__global  float3* position,
+                                                     __kernel void updatePosition(__global  float4* position,
                                                                                   float tick)
                                                      {
                                                        uint gid = get_global_id(0);
@@ -31,14 +31,19 @@ void Viewer::draw()
 {
   
   m_vertices_buffer.bind();
+  glVertexPointer(3, GL_FLOAT,0,0);
   
-  updateVertices();
-  m_tick++;
+ // updateVertices();
+//  m_tick++;
   
   // Draw the triangle !
-  glDrawArrays(GL_TRIANGLES, 0, m_nbVertices);
-
-  m_vertices_buffer.release();
+  //glDrawArrays(GL_TRIANGLES,0, m_nbVertices*3);
+  // Indexes
+  m_indices_buffer.bind();
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+  
+ // m_indices_buffer.release();
+  //m_vertices_buffer.release();
 }
 
 void Viewer::init() {
@@ -73,19 +78,30 @@ void Viewer::init() {
     0.0f,  1.0f, 0.0f,
     2.0,2.0,0};
   
-  m_nbVertices = m_vertices.size();
+  m_indices= {0,1,2,3,4,5};
+  
+  m_nbVertices = m_vertices.size() / 4;
   
   //BUFFER position
   m_vertices_buffer.create();
-  m_vertices_buffer.setUsagePattern(QGLBuffer::DynamicDraw);
+  m_indices_buffer.create();
+
   m_vertices_buffer.bind();
-  m_vertices_buffer.allocate(m_vertices.data(), sizeof(m_vertices.data()));
-  m_vertices_buffer.release();
-  
-  m_vertices_cl = compute::opengl_buffer(m_context, m_vertices_buffer.bufferId());
+  m_vertices_buffer.setUsagePattern(QGLBuffer::StaticDraw);
+  m_vertices_buffer.allocate(m_vertices.data(), sizeof(GLfloat)*m_nbVertices*3);
+  //m_vertices_buffer.release();
+
+  //BUFFER position
+  m_indices_buffer.bind();
+  m_indices_buffer.setUsagePattern(QGLBuffer::StaticDraw);
+  m_indices_buffer.allocate(m_indices.data(), sizeof(GLushort)*6);
+  //m_indices_buffer.release();
 
   
-  glLineWidth(2);
+ // m_vertices_cl = compute::opengl_buffer(m_context, m_vertices_buffer.bufferId());
+
+
+ // glLineWidth(2);
   glClearColor(0xe8/256.,0xe8/256.,0xe8/256.,1);
  
   
